@@ -11,10 +11,9 @@ fish_refresh_life = 6
 for day in range(1, end_day):
     for fish_i, fish in enumerate(fishes):
         if fishes[fish_i] == 0:
-            fishes[fish_i] = fish_refresh_life    
+            fishes[fish_i] = fish_refresh_life
             fishes = np.append(fishes, new_fish_life)
-        else: 
+        else:
             fishes[fish_i] = fishes[fish_i] - 1
 
 print(len(fishes))
-
