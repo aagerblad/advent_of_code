@@ -27,20 +27,32 @@ f = open(filename)
 # 5 9 --
 # 6 7
 
+
 def map_number(mapping_table, output_digit):
     length = len(output_digit)
-    if length == 2: return 1
-    elif length == 3: return 7
-    elif length == 4: return 4
-    elif length == 7: return 8
+    if length == 2:
+        return 1
+    elif length == 3:
+        return 7
+    elif length == 4:
+        return 4
+    elif length == 7:
+        return 8
     elif length == 5:
-        if mapping_table[1] in output_digit: return 5
-        elif mapping_table[4] in output_digit: return 2
-        else: return 3
+        if mapping_table[1] in output_digit:
+            return 5
+        elif mapping_table[4] in output_digit:
+            return 2
+        else:
+            return 3
     else:
-        if mapping_table[4] not in output_digit: return 9
-        elif mapping_table[3] not in output_digit: return 0
-        else: return 6
+        if mapping_table[4] not in output_digit:
+            return 9
+        elif mapping_table[3] not in output_digit:
+            return 0
+        else:
+            return 6
+
 
 sum = 0
 for line in f:
@@ -71,11 +83,11 @@ for line in f:
     for (letter, occurance) in bar:
         if occurance == 7 and letter != mapping_table[3]:
             mapping_table[6] = letter
-    
+
     output_string = ""
     for digit in output:
         output_string = output_string + str(map_number(mapping_table, digit))
-    
+
     sum = sum + int(output_string)
 
 print(sum)

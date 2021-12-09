@@ -1,5 +1,3 @@
-from audioop import avg
-import re
 import numpy as np
 
 filename = "day_7/input.txt"

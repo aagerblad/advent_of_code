@@ -1,6 +1,4 @@
 import re
-from unicodedata import digit
-import numpy as np
 
 filename = "day_8/input.txt"
 

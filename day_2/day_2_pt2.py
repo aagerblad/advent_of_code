@@ -1,6 +1,3 @@
-from turtle import forward
-
-
 f = open("day_2/input.txt")
 
 horizontal_pos = 0

@@ -1,6 +1,4 @@
-from itertools import count
 import numpy as np
-import math
 
 filename = "day_4/input.txt"
 

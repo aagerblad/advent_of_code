@@ -1,6 +1,5 @@
 import re
 import numpy as np
-import math
 
 filename = "day_5/input.txt"
 
