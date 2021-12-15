@@ -29,11 +29,12 @@ shortest_paths = np.zeros(size, dtype="int")
 while paths:
     cur_path = paths.pop(0)
     cur_step = cur_path[-1]
+    prev_step = cur_path[0]
 
     if cur_step == (0, 0):
         sum = f[cur_step]
     else:
-        sum = shortest_paths[cur_path[-2]] + f[cur_step]
+        sum = shortest_paths[prev_step] + f[cur_step]
 
     if shortest_paths[cur_step] == 0 or sum < shortest_paths[cur_step]:
         shortest_paths[cur_step] = sum
@@ -44,13 +45,13 @@ while paths:
             if (
                 0 <= next_step[0] < size[0]
                 and 0 <= next_step[1] < size[1]
-                and next_step not in cur_path
+                and next_step != prev_step
                 and (
                     shortest_paths[next_step] == 0
                     or sum + f[next_step] < shortest_paths[next_step]
                 )
             ):
-                paths.append(cur_path + [next_step])
+                paths.append(([cur_step] + [next_step]))
 
             if next_step == (size[0] - 1, size[1] - 1):
                 shortest_distance = min(sum + f[next_step], shortest_distance)
