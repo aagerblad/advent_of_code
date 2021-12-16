@@ -13,15 +13,10 @@ num_of_bits = (len(f)) * 4
 
 bin_string = bin(int(f, scale))[2:].zfill(num_of_bits)
 
-# print(bin_string)
-
 
 def read_packet(bin_string):
-    print("")
-    print(bin_string)
     i = 0
     if len(bin_string) == 0:
-        print("break early")
         return ([], [], i)
 
     # Read version
@@ -31,8 +26,6 @@ def read_packet(bin_string):
     i += 3
     versions.append(int(version_bin, 2))
     # if int(version_bin, 2) == 7:
-    # print("----------------------")
-    # print(versions)
 
     # Read packet type
     type_bin = bin_string[i : i + 3]
@@ -40,9 +33,7 @@ def read_packet(bin_string):
 
     packet_value = []
     if int(type_bin, 2) == 4:
-        # print("literal")
         while True:
-            # print("loop")
             last_packet_bit = bin_string[i : i + 1]
             i += 1
 
@@ -57,8 +48,6 @@ def read_packet(bin_string):
         length_type = bin_string[i : i + 1]
         i += 1
 
-        # print(length_type)
-
         if length_type == "0":
             # Read bits
             length_in_bits_bin = bin_string[i : i + 15]
@@ -68,7 +57,6 @@ def read_packet(bin_string):
 
             packet_values = []
             while i < end:
-                # print(i)
                 output = read_packet(bin_string[i:end])
                 packet_values += output[0]
                 versions += output[1]
@@ -83,9 +71,7 @@ def read_packet(bin_string):
 
             packet_values = []
             for x in range(length_in_packets):
-                # print("running packet")
                 output = read_packet(bin_string[i:])
-                # print("ran packet")
                 i += output[2]
 
                 packet_values += output[0]
@@ -95,5 +81,4 @@ def read_packet(bin_string):
 
 
 output = read_packet(bin_string)
-print(output)
 print(sum(output[1]))
