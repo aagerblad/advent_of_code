@@ -1,8 +1,3 @@
-# import numpy as np
-
-from struct import pack
-
-
 filename = "day16/input.txt"
 
 f = open(filename).readline().strip()
