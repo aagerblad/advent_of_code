@@ -1,7 +1,7 @@
 (ns util)
 
-(defn myfun  [s]
+(defn myfun  []
   1)
 
-(defn mynewfun [s]
+(defn mynewfun []
   102)
