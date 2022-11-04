@@ -1,4 +1,4 @@
-(ns day_2
+(ns day_2.core
   (:require [clojure.string :as str]
             [clojure.edn :as edn]))
 
