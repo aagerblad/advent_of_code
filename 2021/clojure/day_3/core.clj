@@ -24,26 +24,10 @@
 (defn bin_to_int [list]
   (bin_to_int_ (first list) (rest list) (- (count list) 1)))
 
-
-(def input_ (map #(str/split % #"")
-                 (str/split-lines
-                  (slurp "day_3/input.txt"))))
-
-(def input (map #(map edn/read-string %) input_))
-
-(def l
-  (most_common_bit input))
-
-(println "Value: "
-         (*
-          (bin_to_int l)
-          (bin_to_int (map #(+ 1 %) (map - l)))))
-
 (defn filter_observations [input val]
   (filter
    #(= val (first %1))
    input))
-
 
 (defn calculate_bit_pattern [input up_or_down]
   (if (== 1 (count input))
@@ -53,6 +37,25 @@
               (calculate_bit_pattern
                (map rest (filter_observations input cur_bit)) up_or_down)))))
 
+;; Input
+(def input_ (map #(str/split % #"")
+                 (str/split-lines
+                  (slurp "day_3/input.txt"))))
+
+(def input (map #(map edn/read-string %) input_))
+
+
+;; Part 1
+(def l
+  (most_common_bit input))
+
+(println "Value: "
+         (*
+          (bin_to_int l)
+          (bin_to_int (map #(+ 1 %) (map - l)))))
+
+
+;; Part 2
 (*
  (bin_to_int (calculate_bit_pattern input true))
  (bin_to_int (calculate_bit_pattern input false)))

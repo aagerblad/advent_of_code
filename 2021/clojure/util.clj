@@ -1,7 +1,7 @@
 (ns util)
 
-(defn myfun  []
-  1)
+(defn transpose [m]
+  (apply mapv vector m))
 
-(defn mynewfun []
-  102)
+(defn drop-index [col idx]
+  (filter identity (map-indexed #(if (not= %1 idx) %2) col)))
