@@ -29,3 +29,33 @@
     (* depth dist)))
 
 (step (first input_) input_ 0 0 0)
+
+
+;; Version 2
+(def input
+  (->> "day_2/input.txt"
+       slurp
+       str/split-lines
+       (map #(re-seq #"[a-z]+|\d+" %))
+       (map (fn [[dir dist]] {:dir dir :dist (edn/read-string dist)}))
+       vec))
+
+((fn [{x :x y :y}] (* x y))
+ (reduce (fn [pos step]
+           (case (:dir step)
+             "forward" (assoc pos :x (+ (pos :x) (step :dist)))
+             "down" (assoc pos :y (+ (pos :y) (step :dist)))
+             "up" (assoc pos :y (- (pos :y) (step :dist)))))
+         {:x 0 :y 0}
+         input))
+
+
+((fn [{x :x y :y}] (* x y))
+ (reduce (fn [pos step]
+           (println pos step)
+           (case (:dir step)
+             "forward" (assoc pos :x (+ (pos :x) (step :dist)) :y (+ (pos :y) (* (pos :dir) (step :dist))))
+             "down" (assoc pos :dir (+ (pos :dir) (step :dist)))
+             "up" (assoc pos :dir (- (pos :dir) (step :dist)))))
+         {:x 0 :y 0 :dir 0}
+         input))
