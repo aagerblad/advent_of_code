@@ -16,3 +16,6 @@
   (doseq [row board]
     (doseq [val row] (print val))
     (println)))
+
+(defn shifted-mod [x m s]
+  (+ s (mod (- x s) m)))
