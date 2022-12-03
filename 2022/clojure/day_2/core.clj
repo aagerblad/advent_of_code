@@ -1,6 +1,5 @@
 (ns core
   (:require [clojure.string :as str]
-            [clojure.edn :as edn]
             [util :as util]))
 
 (def input
@@ -30,7 +29,6 @@
         input
         (map #(map mapping %))
         (map #(match % scores))))
-
 
 ;; Part 2
 (defn new_mapping [[p1 p2]]
