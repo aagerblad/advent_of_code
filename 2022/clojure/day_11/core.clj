@@ -24,12 +24,15 @@
       ((ops op) (edn/read-string amount) val)))
 
 
+(def mod-prop
+  (apply * (map :test input)))
+
 ;; Part 1
 (defn run-one-monkey [monkeys_ monkey-nr]
   (let [monkey (monkeys_ monkey-nr)]
     (first
      (reduce (fn [[monkeys from-monkey] item]
-               (let [new-item (int (/ (operation (:operation from-monkey) item) 3)) ;; Create new item
+               (let [new-item (int (/ (operation (:operation from-monkey) (mod item mod-prop)) 3)) ;; Create new item
                      test (= 0 (mod new-item (:test from-monkey))) ;; Test where item get's thrown
                      to-monkey (monkeys ((:pass from-monkey) test)) ;; 
                      updated-to-monkey (update to-monkey :items #(vec (conj % new-item)))
@@ -61,7 +64,7 @@
   (let [monkey (monkeys_ monkey-nr)]
     (first
      (reduce (fn [[monkeys from-monkey] item]
-               (let [new-item (Math/floor (/ (operation (:operation from-monkey) item) 1)) ;; Create new item
+               (let [new-item (operation (:operation from-monkey) (mod item mod-prop)) ;; Create new item
                      test (= 0 (mod new-item (:test from-monkey))) ;; Test where item get's thrown
                      to-monkey (monkeys ((:pass from-monkey) test)) ;; 
                      updated-to-monkey (update to-monkey :items #(vec (conj % new-item)))
@@ -87,5 +90,3 @@
                          rounds-2)))))
 
 
-
-(Math/floor 2338206025)
