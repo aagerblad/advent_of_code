@@ -12,12 +12,17 @@
     [arr]
     (concat [(take n arr)] (group-n n (nthrest arr n)))))
 
-(defn print-matrix [board]
-  (doseq [row board]
-    (doseq [val row] (print val))
-    (println)))
+(defn print-matrix
+  ([board width] (doseq [row board]
+                   (doseq [val row]
+                     (print (str  (apply str (repeat (- width (count (str val))) " ")) val)))
+                   (println)))
+  ([board] (print-matrix board 0)))
 
 (defn shifted-mod [x m s]
   (+ s (mod (- x s) m)))
 
 (defn abs [n] (max n (- n)))
+
+(apply str (repeat (- 3 (count (str 3))) "."))
+(repeat 3 ".")
