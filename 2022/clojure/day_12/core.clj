@@ -66,7 +66,7 @@
 (def dist-map-2
   (loop [next-steps [start-point-2]
          sdm shortest-distance-map-2]
-    (if (empty? next-steps)
+    (if (empty? next-steps
       sdm
       (let [cur-step (first next-steps)
             cur-val (get-in height-map cur-step)
