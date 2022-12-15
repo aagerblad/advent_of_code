@@ -23,6 +23,3 @@
   (+ s (mod (- x s) m)))
 
 (defn abs [n] (max n (- n)))
-
-(apply str (repeat (- 3 (count (str 3))) "."))
-(repeat 3 ".")
