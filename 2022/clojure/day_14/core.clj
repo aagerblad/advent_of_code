@@ -14,6 +14,7 @@
 (def flattened (partition 2 (flatten input)))
 
 (def l-width (apply min (map first flattened)))
+(def l-width 0)
 
 (def new-input
   (map
@@ -24,6 +25,7 @@
 
 
 (def r-width (apply max (map first flattened)))
+(def r-width 1000)
 (def height (apply max (map second flattened)))
 
 
@@ -68,21 +70,45 @@
 
 (util/print-matrix starting-map)
 
+
+;; Part 1
+(util/print-matrix
+ (nth
+  (loop [m starting-map
+         sand start-point
+         i 0]
+    (cond
+      (= (get-in m [(inc (sand 1))  (sand 0)]) ".") (recur m [(sand 0) (inc (sand 1))] i)
+      (= (get-in m [(inc (sand 1)) (dec (sand 0))]) ".") (recur m [(dec (sand 0)) (inc (sand 1))] i)
+      (= (get-in m [(inc (sand 1)) (inc (sand 0))]) ".") (recur m [(inc (sand 0)) (inc (sand 1))] i)
+      :else
+      (let [m_ (assoc-in m [(sand 1) (sand 0)] "o")]
+        (if (= (mod i 50) 0)
+          (do (println) (util/print-matrix m_))
+          nil)
+        (if (= (sand 1) height)
+          (list m_ sand i)
+          (recur m_ start-point (inc i))))))
+  0))
+
+;; Part 2
+(def r (first empty-map))
+(def starting-map-2 (conj starting-map r (map (fn [_] "#") r)))
+
 (nth
- (loop [m starting-map
+ (loop [m starting-map-2
         sand start-point
         i 0]
-
    (cond
      (= (get-in m [(inc (sand 1))  (sand 0)]) ".") (recur m [(sand 0) (inc (sand 1))] i)
      (= (get-in m [(inc (sand 1)) (dec (sand 0))]) ".") (recur m [(dec (sand 0)) (inc (sand 1))] i)
      (= (get-in m [(inc (sand 1)) (inc (sand 0))]) ".") (recur m [(inc (sand 0)) (inc (sand 1))] i)
      :else
      (let [m_ (assoc-in m [(sand 1) (sand 0)] "o")]
-       (if (= (mod i 50) 0)
-         (do (println) (util/print-matrix m_))
-         nil)
-       (if (= (sand 1) height)
+      ;;  (if (= (mod i 50) 0)
+      ;;    (do (println) (util/print-matrix m_))
+      ;;    nil)
+       (if (= (sand 1) 0)
          (list m_ sand i)
          (recur m_ start-point (inc i))))))
  2)
