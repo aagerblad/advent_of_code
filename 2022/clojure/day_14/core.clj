@@ -13,7 +13,7 @@
 
 (def flattened (partition 2 (flatten input)))
 
-(def l-width (apply min (map first flattened)))
+;; (def l-width (apply min (map first flattened)))
 (def l-width 0)
 
 (def new-input
@@ -24,7 +24,7 @@
    input))
 
 
-(def r-width (apply max (map first flattened)))
+;; (def r-width (apply max (map first flattened)))
 (def r-width 1000)
 (def height (apply max (map second flattened)))
 
