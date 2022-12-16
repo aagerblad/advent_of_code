@@ -23,3 +23,16 @@
   (+ s (mod (- x s) m)))
 
 (defn abs [n] (max n (- n)))
+
+(defn create-xy-matrix
+  ([val width height w-pad h-pad] (-> height
+                                      (+ h-pad)
+                                      (repeat val)
+                                      vec
+                                      (#(repeat (+ width w-pad) %))
+                                      vec))
+  ([val width height] (create-xy-matrix val width height 0 0)))
+
+(defn print-xy-matrix
+  ([board width] (print-matrix (transpose board) width))
+  ([board] (print-matrix (transpose board))))
