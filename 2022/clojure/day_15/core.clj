@@ -34,6 +34,23 @@
      [(first results)]
      (rest results))))
 
+;; Part 1
+(def points (get-points rr input))
+
+(def unavailable-points (apply + (map (fn [[a b]] (inc (- b a))) points)))
+
+(def beacons
+  (->> input
+       (map second)
+       (filter (fn [[_ a]] (= a rr)))
+       (map second)
+       set
+       count))
+
+(- unavailable-points beacons)
+
+
+;; Part 2
 (def new-result
   (loop [i 0]
     (if (> i 4000000) i
@@ -47,16 +64,3 @@
              second
              inc))
 (+ (* x_ 4000000) y_)
-
-
-(def unavailable-points (apply + (map (fn [[a b]] (inc (- b a))) points)))
-
-(def beacons
-  (->> input
-       (map second)
-       (filter (fn [[_ a]] (= a result-row)))
-       (map second)
-       set
-       count))
-
-(- unavailable-points beacons)
