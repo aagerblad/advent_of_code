@@ -22,7 +22,7 @@
 (defn shifted-mod [x m s]
   (+ s (mod (- x s) m)))
 
-(defn abs [n] (max n (- n)))
+;; (defn abs [n] (max n (- n)))
 
 (defn create-xy-matrix
   ([val width height w-pad h-pad] (-> height
