@@ -1,6 +1,7 @@
 (ns core
   (:require [clojure.string :as str]
-            [clojure.edn :as edn]))
+            [clojure.edn :as edn]
+            [clojure.math.combinatorics :as combo]))
 
 (def input
   (->> "day_16/input.txt"
@@ -55,7 +56,8 @@ inner-graph
   [graph start end]
   (get-in graph [start :distances end]))
 
-;; Part 1
+(def valves-to-open (remove #(= % "AA") (keys inner-graph)))
+
 (def best-score
   (memoize
    (fn [graph remaining-valves position time-left]
@@ -73,6 +75,18 @@ inner-graph
                                       new-time-left))
                  new-max-score (max steam max-score)]
              (recur (rest queue) new-max-score)))))))
+;; Part 1
 
-(best-score inner-graph (remove #(= % "AA") (keys inner-graph)) "AA" 30)
+(best-score inner-graph valves-to-open "AA" 30)
 
+;; Part 2
+
+(loop [queue (rest (combo/subsets valves-to-open))
+       max-score 0]
+  (if (empty? queue) max-score
+      (let [cur-set-a (first queue)
+            cur-set-b (remove (set cur-set-a) valves-to-open)
+            score (+ (best-score inner-graph cur-set-a "AA" 26)
+                     (best-score inner-graph cur-set-b "AA" 26))
+            new-max-score (max score max-score)]
+        (recur (rest queue) new-max-score))))
