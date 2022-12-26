@@ -24,8 +24,8 @@
           \I [[2 0] [2 1] [2 2] [2 3]]
           \O [[2 0] [2 1] [3 0] [3 1]])))
 
-(defn reverse-print [m]
-  (util/print-xy-matrix (map reverse m)))
+;; (defn reverse-print [m]
+;;   (util/print-xy-matrix (map reverse m)))
 
 (defn draw-rock
   ([mat rock val] (reduce
@@ -67,8 +67,7 @@
        cur-pattern \-
        cur-rock (get-rock \- 3)
        rocks-fallen 0
-       height 0
-       new-stone true]
+       height 0]
   (cond
     (>= rocks-fallen 2022) (inc height)
     (empty? move-queue) (recur mat
@@ -76,8 +75,7 @@
                                cur-pattern
                                cur-rock
                                rocks-fallen
-                               height
-                               false)
+                               height)
     :else
     (let [movement (first move-queue)
           new-rock (move-rock cur-rock (blow-dir movement))
@@ -91,8 +89,7 @@
                next-pattern
                (get-rock next-pattern (+ new-height 4))
                (inc rocks-fallen)
-               new-height
-               true)
+               new-height)
 
         (collision? mat new-rock)
         (recur mat
@@ -100,8 +97,7 @@
                cur-pattern
                cur-rock
                rocks-fallen
-               height
-               false)
+               height)
 
         :else
         (recur mat
@@ -109,8 +105,7 @@
                cur-pattern
                new-rock
                rocks-fallen
-               height
-               false)))))
+               height)))))
 
 (count winds)
 
