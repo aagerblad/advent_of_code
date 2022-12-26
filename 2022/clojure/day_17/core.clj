@@ -2,20 +2,17 @@
   (:require [clojure.string :as str]
             [util :as util]))
 
-(def input
+(def winds
   (->> "day_17/input.txt"
        slurp
        str/trim
-       char-array))
+       char-array
+       (#(flatten (for [x %] [x \d])))))
 
-input
-
-(def winds (flatten (for [x input] [x \d])))
-
-
-(def height 1000000)
-(def width 7)
-(def mat (util/create-xy-matrix \. width height))
+(def mat (util/create-xy-matrix \.
+                                7 ;; Width
+                                1000000 ;; Height
+                                ))
 (def rocks [\- \+ \J \I \O])
 
 (defn get-rock [rock-type height]
@@ -63,7 +60,7 @@ input
   [rock]
   (second (apply map max rock)))
 
-(get-height (get-rock \J 10))
+;; Part 1
 
 (loop [mat mat
        move-queue winds
@@ -87,16 +84,8 @@ input
           next-pattern (next-pattern rocks cur-pattern)
           new-height (max height (get-height cur-rock))]
       (cond
-        (below-bottom? new-rock)
-        (recur (draw-rock mat cur-rock)
-               (rest move-queue)
-               next-pattern
-               (get-rock next-pattern (+ new-height 4))
-               (inc rocks-fallen)
-               new-height
-               true)
-
-        (and (= movement \d) (collision? mat new-rock))
+        (or (and (= movement \d) (collision? mat new-rock))
+            (below-bottom? new-rock))
         (recur (draw-rock mat cur-rock)
                (rest move-queue)
                next-pattern
@@ -122,3 +111,150 @@ input
                rocks-fallen
                height
                false)))))
+
+(count winds)
+
+;; Part 2
+
+(defn cycle-start?
+  [cur-pattern start-pattern move-queue winds]
+  (and (= cur-pattern start-pattern) (= (count move-queue) (count winds))))
+
+
+;; Find cycle
+(loop [mat mat
+       move-queue winds
+       cur-pattern \-
+       cur-rock (get-rock \- 3)
+       rocks-fallen 0
+       prev-rocks-fallen 0
+       height 0
+       prev-height 0]
+  (when (cycle-start? cur-pattern \J move-queue winds)
+    (println (- rocks-fallen prev-rocks-fallen) (- height prev-height)))
+
+  (cond
+    (>= rocks-fallen 202200) (inc height)
+    (empty? move-queue) (recur mat
+                               winds
+                               cur-pattern
+                               cur-rock
+                               rocks-fallen
+                               prev-rocks-fallen
+                               height
+                               prev-height)
+    :else
+    (let [movement (first move-queue)
+          new-rock (move-rock cur-rock (blow-dir movement))
+          next-pattern (next-pattern rocks cur-pattern)
+          new-height (max height (get-height cur-rock))
+          new-prev-rocks-fallen (if (cycle-start? cur-pattern \J move-queue winds) rocks-fallen prev-rocks-fallen)
+          new-prev-height (if (cycle-start? cur-pattern \J move-queue winds) height prev-height)]
+      (cond
+        (or (and (= movement \d) (collision? mat new-rock))
+            (below-bottom? new-rock))
+        (recur (draw-rock mat cur-rock)
+               (rest move-queue)
+               next-pattern
+               (get-rock next-pattern (+ new-height 4))
+               (inc rocks-fallen)
+               new-prev-rocks-fallen
+               new-height
+               new-prev-height)
+
+        (collision? mat new-rock)
+        (recur mat
+               (rest move-queue)
+               cur-pattern
+               cur-rock
+               rocks-fallen
+               new-prev-rocks-fallen
+               height
+               new-prev-height)
+
+        :else
+        (recur mat
+               (rest move-queue)
+               cur-pattern
+               new-rock
+               rocks-fallen
+               new-prev-rocks-fallen
+               height
+               new-prev-height)))))
+;; 1745 2752
+
+;; Find point where cycle starts
+(mod 1000000000000 1745)
+(+ 1745 1010)
+;; 2755
+
+(int (/ (- 1000000000000 1745) 1745))
+
+(* 573065901 1745)
+(+ 999999997245 2755)
+
+
+(+ 4363 (* 573065901 2752))
+
+;; Find height where cycle starts
+(loop [mat mat
+       move-queue winds
+       cur-pattern \-
+       cur-rock (get-rock \- 3)
+       rocks-fallen 0
+       prev-rocks-fallen 0
+       height 0
+       prev-height 0]
+  (when (cycle-start? cur-pattern \J move-queue winds)
+    (println (- rocks-fallen prev-rocks-fallen) (- height prev-height)))
+
+  (cond
+    (>= rocks-fallen 2755) (inc height)
+    (empty? move-queue) (recur mat
+                               winds
+                               cur-pattern
+                               cur-rock
+                               rocks-fallen
+                               prev-rocks-fallen
+                               height
+                               prev-height)
+    :else
+    (let [movement (first move-queue)
+          new-rock (move-rock cur-rock (blow-dir movement))
+          next-pattern (next-pattern rocks cur-pattern)
+          new-height (max height (get-height cur-rock))
+          new-prev-rocks-fallen (if (cycle-start? cur-pattern \J move-queue winds) rocks-fallen prev-rocks-fallen)
+          new-prev-height (if (cycle-start? cur-pattern \J move-queue winds) height prev-height)]
+      (cond
+        (or (and (= movement \d) (collision? mat new-rock))
+            (below-bottom? new-rock))
+        (recur (draw-rock mat cur-rock)
+               (rest move-queue)
+               next-pattern
+               (get-rock next-pattern (+ new-height 4))
+               (inc rocks-fallen)
+               new-prev-rocks-fallen
+               new-height
+               new-prev-height)
+
+        (collision? mat new-rock)
+        (recur mat
+               (rest move-queue)
+               cur-pattern
+               cur-rock
+               rocks-fallen
+               new-prev-rocks-fallen
+               height
+               new-prev-height)
+
+        :else
+        (recur mat
+               (rest move-queue)
+               cur-pattern
+               new-rock
+               rocks-fallen
+               new-prev-rocks-fallen
+               height
+               new-prev-height)))))
+;; 4363
+
