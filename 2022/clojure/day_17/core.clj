@@ -24,9 +24,6 @@
           \I [[2 0] [2 1] [2 2] [2 3]]
           \O [[2 0] [2 1] [3 0] [3 1]])))
 
-;; (defn reverse-print [m]
-;;   (util/print-xy-matrix (map reverse m)))
-
 (defn draw-rock
   ([mat rock val] (reduce
                    (fn [mat pixel] (assoc-in mat pixel val))
@@ -60,61 +57,59 @@
   [rock]
   (second (apply map max rock)))
 
+(defn run-game [rocks-to-drop]
+  (loop [mat mat
+         move-queue winds
+         cur-pattern \-
+         cur-rock (get-rock \- 3)
+         rocks-fallen 0
+         height 0]
+    (cond
+      (>= rocks-fallen rocks-to-drop) (inc height)
+      (empty? move-queue) (recur mat
+                                 winds
+                                 cur-pattern
+                                 cur-rock
+                                 rocks-fallen
+                                 height)
+      :else
+      (let [movement (first move-queue)
+            new-rock (move-rock cur-rock (blow-dir movement))
+            next-pattern (next-pattern rocks cur-pattern)
+            new-height (max height (get-height cur-rock))]
+        (cond
+          (or (and (= movement \d) (collision? mat new-rock))
+              (below-bottom? new-rock))
+          (recur (draw-rock mat cur-rock)
+                 (rest move-queue)
+                 next-pattern
+                 (get-rock next-pattern (+ new-height 4))
+                 (inc rocks-fallen)
+                 new-height)
+
+          (collision? mat new-rock)
+          (recur mat
+                 (rest move-queue)
+                 cur-pattern
+                 cur-rock
+                 rocks-fallen
+                 height)
+
+          :else
+          (recur mat
+                 (rest move-queue)
+                 cur-pattern
+                 new-rock
+                 rocks-fallen
+                 height))))))
+
 ;; Part 1
-
-(loop [mat mat
-       move-queue winds
-       cur-pattern \-
-       cur-rock (get-rock \- 3)
-       rocks-fallen 0
-       height 0]
-  (cond
-    (>= rocks-fallen 2022) (inc height)
-    (empty? move-queue) (recur mat
-                               winds
-                               cur-pattern
-                               cur-rock
-                               rocks-fallen
-                               height)
-    :else
-    (let [movement (first move-queue)
-          new-rock (move-rock cur-rock (blow-dir movement))
-          next-pattern (next-pattern rocks cur-pattern)
-          new-height (max height (get-height cur-rock))]
-      (cond
-        (or (and (= movement \d) (collision? mat new-rock))
-            (below-bottom? new-rock))
-        (recur (draw-rock mat cur-rock)
-               (rest move-queue)
-               next-pattern
-               (get-rock next-pattern (+ new-height 4))
-               (inc rocks-fallen)
-               new-height)
-
-        (collision? mat new-rock)
-        (recur mat
-               (rest move-queue)
-               cur-pattern
-               cur-rock
-               rocks-fallen
-               height)
-
-        :else
-        (recur mat
-               (rest move-queue)
-               cur-pattern
-               new-rock
-               rocks-fallen
-               height)))))
-
-(count winds)
+(run-game 2022)
 
 ;; Part 2
-
 (defn cycle-start?
   [cur-pattern start-pattern move-queue winds]
   (and (= cur-pattern start-pattern) (= (count move-queue) (count winds))))
-
 
 ;; Find cycle
 (loop [mat mat
@@ -183,73 +178,13 @@
 (+ 1745 1010)
 ;; 2755
 
-(int (/ (- 1000000000000 1745) 1745))
-
-(* 573065901 1745)
-(+ 999999997245 2755)
-
-
-(+ 4363 (* 573065901 2752))
-
 ;; Find height where cycle starts
-(loop [mat mat
-       move-queue winds
-       cur-pattern \-
-       cur-rock (get-rock \- 3)
-       rocks-fallen 0
-       prev-rocks-fallen 0
-       height 0
-       prev-height 0]
-  (when (cycle-start? cur-pattern \J move-queue winds)
-    (println (- rocks-fallen prev-rocks-fallen) (- height prev-height)))
-
-  (cond
-    (>= rocks-fallen 2755) (inc height)
-    (empty? move-queue) (recur mat
-                               winds
-                               cur-pattern
-                               cur-rock
-                               rocks-fallen
-                               prev-rocks-fallen
-                               height
-                               prev-height)
-    :else
-    (let [movement (first move-queue)
-          new-rock (move-rock cur-rock (blow-dir movement))
-          next-pattern (next-pattern rocks cur-pattern)
-          new-height (max height (get-height cur-rock))
-          new-prev-rocks-fallen (if (cycle-start? cur-pattern \J move-queue winds) rocks-fallen prev-rocks-fallen)
-          new-prev-height (if (cycle-start? cur-pattern \J move-queue winds) height prev-height)]
-      (cond
-        (or (and (= movement \d) (collision? mat new-rock))
-            (below-bottom? new-rock))
-        (recur (draw-rock mat cur-rock)
-               (rest move-queue)
-               next-pattern
-               (get-rock next-pattern (+ new-height 4))
-               (inc rocks-fallen)
-               new-prev-rocks-fallen
-               new-height
-               new-prev-height)
-
-        (collision? mat new-rock)
-        (recur mat
-               (rest move-queue)
-               cur-pattern
-               cur-rock
-               rocks-fallen
-               new-prev-rocks-fallen
-               height
-               new-prev-height)
-
-        :else
-        (recur mat
-               (rest move-queue)
-               cur-pattern
-               new-rock
-               rocks-fallen
-               new-prev-rocks-fallen
-               height
-               new-prev-height)))))
+(run-game 2755)
 ;; 4363
 
+;; Cycles until goal
+(int (/ (- 1000000000000 1745) 1745))
+
+;; Height at cycle start
+;; + (cycles * cycle-height)
+(+ 4363 (* 573065901 2752))
