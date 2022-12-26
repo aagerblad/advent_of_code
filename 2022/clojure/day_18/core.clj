@@ -19,8 +19,7 @@
                  (= 1))) voxels))
 
 ;; Part 1
-(apply +
-       (map
-        #(- 6 (count (get-adjacent-voxels % input)))
-        input))
-
+(reduce
+ #(+ %1 6 (- (count (get-adjacent-voxels %2 input))))
+ 0
+ input)
