@@ -1,0 +1,4 @@
+(executable
+ (public_name OCaml_AOC)
+ (name main)
+ (libraries core))

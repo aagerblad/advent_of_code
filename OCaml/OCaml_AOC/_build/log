@@ -1,0 +1,22 @@
+# dune build
+# OCAMLPARAM: unset
+# Shared cache: enabled-except-user-rules
+# Shared cache location: /Users/aagerblad/.cache/dune/db
+# Workspace root: /Users/aagerblad/code/personal/advent_of_code/OCaml/OCaml_AOC
+# Auto-detected concurrency: 10
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; instrument_with = []
+#  }
+$ /opt/homebrew/bin/ocamlc.opt -config > /var/folders/vf/97s75kfn1r93v8d4czj3756h0000gn/T/dune_e1eca9_output
+$ (cd _build/default && /opt/homebrew/bin/ocamlopt.opt -w @1..3@5..28@31..39@43@46..47@49..57@61..62@67@69-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I day_1/.main.eobjs/byte -I day_1/.main.eobjs/native -I /Users/aagerblad/.opam/default/lib/base -I /Users/aagerblad/.opam/default/lib/base/base_internalhash_types -I /Users/aagerblad/.opam/default/lib/base/md5 -I /Users/aagerblad/.opam/default/lib/base/shadow_stdlib -I /Users/aagerblad/.opam/default/lib/base_bigstring -I /Users/aagerblad/.opam/default/lib/base_quickcheck -I /Users/aagerblad/.opam/default/lib/base_quickcheck/ppx_quickcheck/runtime -I /Users/aagerblad/.opam/default/lib/bin_prot -I /Users/aagerblad/.opam/default/lib/bin_prot/shape -I /Users/aagerblad/.opam/default/lib/core -I /Users/aagerblad/.opam/default/lib/core/base_for_tests -I /Users/aagerblad/.opam/default/lib/core/command -I /Users/aagerblad/.opam/default/lib/core/filename_base -I /Users/aagerblad/.opam/default/lib/core/heap_block -I /Users/aagerblad/.opam/default/lib/core/univ_map -I /Users/aagerblad/.opam/default/lib/core/validate -I /Users/aagerblad/.opam/default/lib/fieldslib -I /Users/aagerblad/.opam/default/lib/gel -I /Users/aagerblad/.opam/default/lib/int_repr -I /Users/aagerblad/.opam/default/lib/jane-street-headers -I /Users/aagerblad/.opam/default/lib/ocaml_intrinsics_kernel -I /Users/aagerblad/.opam/default/lib/parsexp -I /Users/aagerblad/.opam/default/lib/ppx_assert/runtime-lib -I /Users/aagerblad/.opam/default/lib/ppx_bench/runtime-lib -I /Users/aagerblad/.opam/default/lib/ppx_compare/runtime-lib -I /Users/aagerblad/.opam/default/lib/ppx_diff/diffable -I /Users/aagerblad/.opam/default/lib/ppx_diff/diffable_cinaps -I /Users/aagerblad/.opam/default/lib/ppx_enumerate/runtime-lib -I /Users/aagerblad/.opam/default/lib/ppx_expect/config -I /Users/aagerblad/.opam/default/lib/ppx_expect/config_types -I /Users/aagerblad/.opam/default/lib/ppx_expect/make_corrected_file -I /Users/aagerblad/.opam/default/lib/ppx_expect/runtime -I /Users/aagerblad/.opam/default/lib/ppx_hash/runtime-lib -I /Users/aagerblad/.opam/default/lib/ppx_here/runtime-lib -I /Users/aagerblad/.opam/default/lib/ppx_inline_test/config -I /Users/aagerblad/.opam/default/lib/ppx_inline_test/runtime-lib -I /Users/aagerblad/.opam/default/lib/ppx_log/syntax -I /Users/aagerblad/.opam/default/lib/ppx_log/types -I /Users/aagerblad/.opam/default/lib/ppx_module_timer/runtime -I /Users/aagerblad/.opam/default/lib/ppx_sexp_conv/runtime-lib -I /Users/aagerblad/.opam/default/lib/ppx_stable_witness/runtime -I /Users/aagerblad/.opam/default/lib/ppx_stable_witness/stable_witness -I /Users/aagerblad/.opam/default/lib/ppx_string/runtime -I /Users/aagerblad/.opam/default/lib/ppxlib/print_diff -I /Users/aagerblad/.opam/default/lib/sexplib -I /Users/aagerblad/.opam/default/lib/sexplib0 -I /Users/aagerblad/.opam/default/lib/splittable_random -I /Users/aagerblad/.opam/default/lib/stdio -I /Users/aagerblad/.opam/default/lib/time_now -I /Users/aagerblad/.opam/default/lib/typerep -I /Users/aagerblad/.opam/default/lib/variantslib -intf-suffix .ml -no-alias-deps -opaque -o day_1/.main.eobjs/native/dune__exe__Main.cmx -c -impl day_1/main.ml)
+> File "day_1/main.ml", line 5, characters 4-11:
+> 5 | let content = In_channel.read_all "input.txt";;
+>         ^^^^^^^
+> Error (warning 32 [unused-value-declaration]): unused value content.
+[2]
